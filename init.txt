@@ -1,0 +1,59 @@
+ssh-keygen -t rsa -b 4096
+/home/xxx/.ssh/authorized_keys
+cat id_dsa.pub >> .ssh/authorized_keys
+sudo diff /etc/ssh/sshd_config /etc/ssh/sshd_config.orig
+systemctl restart sshd
+
+wget https://gist.githubusercontent.com/thoschu/e5e42bbc2aaa6234d8502e7bb6ea5d44/raw/af47cfb02232a7ac0ae06d49cc23acf277b202a9/java-docker.sh
+
+cd  /etc/netplan/
+netplan generate
+netplan apply
+
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nginx
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.MacAddress}}{{end}}' nginx
+
+docker run -d --name jenkins2 -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+docker exec -it jenkins2 cat /var/jenkins_home/secrets/initialAdminPassword
+
+docker run --name chat -d -p 3000:3000 thoschu/de.schulte360.web.chat
+
+docker run --name snake -d thoschu/de.schulte360.web.snake
+
+docker run --name nginx -v /nginx/html:/usr/share/nginx/html:ro -v /nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro --link chat:chat -p 80:80 -p 443:443 -d nginx
+docker run --name nginx -v /nginx/html:/usr/share/nginx/html:ro -v /nginx/conf:/etc/nginx:ro --link chat:chat -p 80:80 -p 443:443 -d nginx
+docker run --name nginx -v /root/nginx/html:/usr/share/nginx/html:ro --link chat:chat -p 80:80 -p 443:443 -d nginx
+docker run --name nginx --link chat:chat -p 80:80 -p 443:443 -d nginx
+docker run --name nginx -p 80:80 -p 443:443 -d nginx
+cat /etc/hosts
+
+
+docker run \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:ro \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --volume=/dev/disk/:/dev/disk:ro \
+  --publish=8888:8080 \
+  --detach=true \
+  --name=cadvisor \
+  google/cadvisor:latest
+
+OVPN_DATA="ovpn-data-container"
+docker volume create --name $OVPN_DATA
+docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_genconfig -u udp://188.68.54.193
+docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm -it kylemanna/openvpn ovpn_initpki
+
+docker run -v $OVPN_DATA:/etc/openvpn -d -p 1194:1194/udp --privileged --name ovpn --cap-add=NET_ADMIN kylemanna/openvpn
+docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm -it kylemanna/openvpn easyrsa build-client-full tom nopass
+docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_getclient tom > tom.ovpn	
+
+wget https://github.com/nginxinc/nginx-amplify-agent/raw/master/packages/install.sh
+apt-cache pkgnames | grep python2.7
+apt-get install python2.7
+
+lsb_release -a
+uname -a
+
+https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-9
+	 
