@@ -1,6 +1,7 @@
 ### In nginx.sh (make sure this file is chmod +x):
 #!/bin/sh
 
+dnsdomainname
 
 ## Install NGINX on Ubuntu
 sudo su -
