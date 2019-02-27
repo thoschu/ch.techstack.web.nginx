@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta http-equiv="refresh" content="7; url=http://server360.io/">
+		<meta name="description" content="301">
+		<meta name="author" content="Tom S.">
+		<style type="text/css">
+			.className {
+				width:270px;
+				height:150px;
+				position:absolute;
+				left:50%;
+				top:50%;
+				margin:-75px 0 0 -135px;
+			}
+		</style>
+		<!-- Piwik -->
+		<script type="text/javascript">
+			var _paq = _paq || [];
+			_paq.push(["setCookieDomain", "*.server360.io"]);
+			_paq.push(['trackPageView']);
+			_paq.push(['enableLinkTracking']);
+			(function() {
+				var u="//analytics.schulte360.de/";
+				_paq.push(['setTrackerUrl', u+'piwik.php']);
+				_paq.push(['setSiteId', '4']);
+				var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+				g.type='text/javascript'; 
+				g.async=true; 
+				g.defer=true; 
+				g.src=u+'piwik.js'; 
+				s.parentNode.insertBefore(g,s);
+			})();
+		</script>
+		<!-- End Piwik Code -->
+		<template>
+			🐕,🐩,🐈,🐀,🐭,🐹,🐢,🐇,🐓,🐔,🐣,🐥,🐏,🐑,🐐,🐺,🐃,🐂,🐄,🐴,🐗,🐖,🐸,🐍,🐼,🐧,🐘,🐨,🐒,🐆,🐯,🐻,🐪,🐊,🐳,🐋,🐟,🐠,🐡,🐙,🐚,🐬,🐌,🐛,🐜,🐝,🐞,🐉,😮,🌑,🌒,🌕
+		</template>
+	</head>
+	<body> 
+		<!-- Piwik Image Tracker-->
+		<img src="https://analytics.schulte360.de/piwik.php?idsite=4&rec=1" style="border:0" alt="" />
+		<!-- End Piwik -->
+		<div class="className">
+			<img src="img/spinner.gif" alt="spinner" height="256" width="256">
+		</div>
+		<script>
+			var emojis = document.querySelector('template'),
+				title = document.querySelector('title'),
+				content = emojis.innerHTML.split(",");
+			
+			function Shuffle(o) {
+				for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+				return o;
+			};
+			
+			title.innerText = Shuffle(content).toString().replace(/,/gi, "");
+		</script>
+	</body>
+</html>

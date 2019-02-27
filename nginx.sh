@@ -74,12 +74,12 @@ cat  /var/www/server360.local/index.html
 cat  /etc/nginx/conf.d/server360.local.conf
 
 ## server360.local.conf
-server {
-        listen 80; ### default_server;
-        server_name ec2-18-184-225-53.eu-central-1.compute.amazonaws.com;
-        index index.htm index.html index.php;
-        root /var/www/server360.local;
-}
+#server {
+#        listen 80; ### default_server;
+#        server_name ec2-18-184-225-53.eu-central-1.compute.amazonaws.com;
+#        index index.htm index.html index.php;
+#        root /var/www/server360.local;
+#}
 
 
 ## Add files
@@ -99,79 +99,78 @@ cd images
 wget -nd -H -p -A jpg,jpeg,png,gif -e robots=off http://boards.4chan.org/sp/
 nano /var/www/server360.local/404.html
 
-server {
-        listen 80;
-        server_name ec2-18-184-225-53.eu-central-1.compute.amazonaws.com;
-        index index.htm index.html index.php;
-        root /var/www/server360.local;
-
-
-        location / {
-                try_files $uri $uri/ =404;
-        }
-
-        location /images {
-                autoindex on;
-        }
-
-        error_page 404 /404.html;
-        location = /404.html {
-                internal;
-        }
-
-        error_page 500 502 503 504 /50x.html;
-        location = /50x.html {
-                internal;
-        }
-
-        location = /500 {
-                fastcgi_pass unix:/this/will/fail;
-        }
-
-}
+#server {
+#        listen 80;
+#        server_name ec2-18-184-225-53.eu-central-1.compute.amazonaws.com;
+#        index index.htm index.html index.php;
+#        root /var/www/server360.local;
+#
+#
+#        location / {
+#                try_files $uri $uri/ =404;
+#        }
+#
+#        location /images {
+#                autoindex on;
+#        }
+#
+#        error_page 404 /404.html;
+#        location = /404.html {
+#                internal;
+#        }
+#
+#        error_page 500 502 503 504 /50x.html;
+#        location = /50x.html {
+#                internal;
+#        }
+#
+#        location = /500 {
+#                fastcgi_pass unix:/this/will/fail;
+#        }
+#}
 
 
 ## Configure logs
-access_log /var/log/nginx/server360.local/access.log;
-error_log /var/log/nginx/server360.local/error.log;
+#access_log /var/log/nginx/server360.local/access.log;
+#error_log /var/log/nginx/server360.local/error.log;
+#
+#server {
+#        listen 80;
+#        server_name ec2-18-184-225-53.eu-central-1.compute.amazonaws.com;
+#        index index.htm index.html index.php;
+#        root /var/www/server360.local;
+#
+#        access_log /var/log/nginx/server360.local.access.log;
+#        error_log /var/log/nginx/server360.local.error.log;
+#
+#        location / {
+#                try_files $uri $uri/ =404;
+#        }
+#
+#        location /images {
+#                autoindex on;
+#                access_log /var/log/nginx/server360.local.images.access.log;
+#                error_log /var/log/nginx/server360.local.images.error.log;
+#
+#        }
+#
+#        error_page 404 /404.html;
+#        location = /404.html {
+#                internal;
+#        }
+#
+#        error_page 500 502 503 504 /50x.html;
+#        location = /50x.html {
+#                internal;
+#        }
+#
+#        location = /500 {
+#                fastcgi_pass unix:/this/will/fail;
+#        }
+#
+#}
 
-server {
-        listen 80;
-        server_name ec2-18-184-225-53.eu-central-1.compute.amazonaws.com;
-        index index.htm index.html index.php;
-        root /var/www/server360.local;
-
-        access_log /var/log/nginx/server360.local.access.log;
-        error_log /var/log/nginx/server360.local.error.log;
-
-        location / {
-                try_files $uri $uri/ =404;
-        }
-
-        location /images {
-                autoindex on;
-                access_log /var/log/nginx/server360.local.images.access.log;
-                error_log /var/log/nginx/server360.local.images.error.log;
-
-        }
-
-        error_page 404 /404.html;
-        location = /404.html {
-                internal;
-        }
-
-        error_page 500 502 503 504 /50x.html;
-        location = /50x.html {
-                internal;
-        }
-
-        location = /500 {
-                fastcgi_pass unix:/this/will/fail;
-        }
-
-}
-
-for i in {1..10}; do curl localhost > /dev/null; done;
+#for i in {1..10}; do curl localhost > /dev/null; done;
 
 
 ## troubleshooting NGINX
@@ -190,53 +189,53 @@ apt install php-fpm php-mysql -y
 php --version
 systemctl status php7.2-fpm
 
-<?php phpinfo(); phpinfo(INFO_MODULES); ?> ### index.php
+#<?php phpinfo(); phpinfo(INFO_MODULES); ?> ### index.php
 
-server {
-        listen 80;
-        server_name ec2-35-158-139-53.eu-central-1.compute.amazonaws.com;
-        index index.htm index.html index.php;
-        root /var/www/server360.local;
-
-        access_log /var/log/nginx/server360.local.access.log;
-        error_log /var/log/nginx/server360.local.error.log;
-
-
-        location / {
-                try_files $uri $uri/ =404;
-        }
-
-
-        location /images {
-                autoindex on;
-                access_log /var/log/nginx/server360.local.images.access.log;
-                error_log /var/log/nginx/server360.local.images.error.log;
-
-        }
-
-
-        error_page 404 /404.html;
-        location = /404.html {
-                internal;
-        }
-
-
-        error_page 500 502 503 504 /50x.html;
-        location = /50x.html {
-                internal;
-        }
-
-
-        location = /500 {
-                fastcgi_pass unix:/this/will/fail;
-        }
-
-        location ~ \.php$ {
-                include snippets/fastcgi-php.conf;
-                fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
-                fastcgi_intercept_errors on;
-        }
-}
+#server {
+#        listen 80;
+#        server_name ec2-35-158-139-53.eu-central-1.compute.amazonaws.com;
+#        index index.htm index.html index.php;
+#        root /var/www/server360.local;
+#
+#        access_log /var/log/nginx/server360.local.access.log;
+#        error_log /var/log/nginx/server360.local.error.log;
+#
+#
+#        location / {
+#                try_files $uri $uri/ =404;
+#        }
+#
+#
+#        location /images {
+#                autoindex on;
+#                access_log /var/log/nginx/server360.local.images.access.log;
+#                error_log /var/log/nginx/server360.local.images.error.log;
+#
+#        }
+#
+#
+#        error_page 404 /404.html;
+#        location = /404.html {
+#                internal;
+#        }
+#
+#
+#        error_page 500 502 503 504 /50x.html;
+#        location = /50x.html {
+#                internal;
+#        }
+#
+#
+#        location = /500 {
+#                fastcgi_pass unix:/this/will/fail;
+#        }
+#
+#        location ~ \.php$ {
+#                include snippets/fastcgi-php.conf;
+#                fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+#                fastcgi_intercept_errors on;
+#        }
+#}
 
 apt-get install mariadb-server mariadb-client -y
 systemctl status mysqld.service
@@ -278,15 +277,15 @@ npm start
 nohup npm start &
 nohup node /nodeapp/index.js &
 
-http {
-	upstream {
-	}
-	
-	 server {
-		location {
-		}
-	 }
-}
+#http {
+#	upstream {
+#	}
+#
+#	 server {
+#		location {
+#		}
+#	 }
+#}
 
 sudo su -
 lsof -i -P -n | grep LISTEN
@@ -294,158 +293,157 @@ netstat -tulpn | grep LISTEN
 netstat -tulpn | grep LISTEN
 
  # configuration file /etc/nginx/conf.d/server360.local.conf:
-upstream app_snake_7777 {
-        server 127.0.0.1:7777;
-}
-
-upstream app_snake_round_robin {
-        server 127.0.0.1:7777;
-        server 127.0.0.1:8888;
-        server 127.0.0.1:9999;
-}
-
-upstream app_snake_least_conn {
-        least_conn;
-        server 127.0.0.1:7777;
-        server 127.0.0.1:8888;
-        server 127.0.0.1:9999;
-}
-
-upstream app_snake_ip_hash {
-        ip_hash;
-        server 127.0.0.1:7777;
-        server 127.0.0.1:8888;
-        server 127.0.0.1:9999;
-}
-
-upstream app_snake_weight {
-        server 127.0.0.1:7777;
-        server 127.0.0.1:8888 weight=3;
-        server 127.0.0.1:9999;
-}
-
-server {
-        listen 80;
-        server_name ec2-35-158-139-53.eu-central-1.compute.amazonaws.com;
-        # return 301 https://$server_addr$request_uri;
-        return 301 https://$server_name$request_uri;
-        # return 301 https://$host$request_uri;
-        # return 301 https://ec2-35-158-139-53.eu-central-1.compute.amazonaws.com;
-}
-
-server {
-        listen 443 ssl;
-        ssl_certificate /etc/ssl/certs/nginx.crt;
-        ssl_certificate_key /etc/ssl/private/nginx.key;
-
-        server_name ec2-35-158-139-53.eu-central-1.compute.amazonaws.com;
-        index index.htm index.html index.php;
-        root /var/www/server360.local;
-
-        access_log /var/log/nginx/server360.local.access.log;
-        error_log /var/log/nginx/server360.local.error.log;
-
-
-        location / {
-                # auth_basic "Auth is req...";
-                # auth_basic_user_file /etc/nginx/passwords;
-                try_files $uri $uri/ =404;
-        }
-
-
-        location /snake/ {
-                # trailing is the key
-                proxy_pass http://app_snake_7777/;
-        }
-
-
-        location /roundrobin/ {
-                proxy_pass http://app_snake_round_robin/;
-        }
-
-
-        location /leastconn/ {
-                proxy_pass http://app_snake_least_conn/;
-        }
-
-        location /iphash/ {
-                proxy_pass http://app_snake_ip_hash/;
-        }
-
-
-        location /weight/ {
-                proxy_pass http://app_snake_weight/;
-        }
-
-
-        location /info/ {
-                return 200 $server_name$request_uri;
-        }
-
-        location /images {
-                autoindex on;
-                allow 192.168.0.0/24;
-                allow 10.0.0.0/8;
-                allow 95.90.252.154;
-                deny all;
-                access_log /var/log/nginx/server360.local.images.access.log;
-                error_log /var/log/nginx/server360.local.images.error.log;
-
-        }
-
-         error_page 403 /403.html;
-                location = /403.html {
-                internal;
-        }
-
-        error_page 404 /404.html;
-        location = /404.html {
-                internal;
-        }
-
-        error_page 500 502 503 504 /50x.html;
-        location = /50x.html {
-                internal;
-        }
-
-
-        location = /500 {
-                fastcgi_pass unix:/this/will/fail;
-        }
-
-        location ~ \.php$ {
-                include snippets/fastcgi-php.conf;
-                fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
-                fastcgi_intercept_errors on;
-        }
-
-        location /secure {
-                autoindex on;
-                allow 95.90.252.154;
-                deny all;
-                location ~ \.php$ {
-                        include snippets/fastcgi-php.conf;
-                        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
-                        fastcgi_intercept_errors on;
-                }
-
-        }
-
-        location /open/ {
-                autoindex on;
-                auth_basic "Auth is req...";
-                auth_basic_user_file /etc/nginx/passwords;
-
-                location ~ \.php$ {
-                        include snippets/fastcgi-php.conf;
-                        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
-                        fastcgi_intercept_errors on;
-                }
-
-        }
-
-}
- 
+#upstream app_snake_7777 {
+#        server 127.0.0.1:7777;
+#}
+#
+#upstream app_snake_round_robin {
+#        server 127.0.0.1:7777;
+#        server 127.0.0.1:8888;
+#        server 127.0.0.1:9999;
+#}
+#
+#upstream app_snake_least_conn {
+#        least_conn;
+#        server 127.0.0.1:7777;
+#        server 127.0.0.1:8888;
+#        server 127.0.0.1:9999;
+#}
+#
+#upstream app_snake_ip_hash {
+#        ip_hash;
+#        server 127.0.0.1:7777;
+#        server 127.0.0.1:8888;
+#        server 127.0.0.1:9999;
+#}
+#
+#upstream app_snake_weight {
+#        server 127.0.0.1:7777;
+#        server 127.0.0.1:8888 weight=3;
+#        server 127.0.0.1:9999;
+#}
+#
+#server {
+#        listen 80;
+#        server_name ec2-35-158-139-53.eu-central-1.compute.amazonaws.com;
+#        # return 301 https://$server_addr$request_uri;
+#        return 301 https://$server_name$request_uri;
+#        # return 301 https://$host$request_uri;
+#        # return 301 https://ec2-35-158-139-53.eu-central-1.compute.amazonaws.com;
+#}
+#
+#server {
+#        listen 443 ssl;
+#        ssl_certificate /etc/ssl/certs/nginx.crt;
+#        ssl_certificate_key /etc/ssl/private/nginx.key;
+#
+#        server_name ec2-35-158-139-53.eu-central-1.compute.amazonaws.com;
+#        index index.htm index.html index.php;
+#        root /var/www/server360.local;
+#
+#        access_log /var/log/nginx/server360.local.access.log;
+#        error_log /var/log/nginx/server360.local.error.log;
+#
+#
+#        location / {
+#                # auth_basic "Auth is req...";
+#                # auth_basic_user_file /etc/nginx/passwords;
+#                try_files $uri $uri/ =404;
+#        }
+#
+#
+#        location /snake/ {
+#                # trailing is the key
+#                proxy_pass http://app_snake_7777/;
+#        }
+#
+#
+#        location /roundrobin/ {
+#                proxy_pass http://app_snake_round_robin/;
+#        }
+#
+#
+#        location /leastconn/ {
+#                proxy_pass http://app_snake_least_conn/;
+#        }
+#
+#        location /iphash/ {
+#                proxy_pass http://app_snake_ip_hash/;
+#        }
+#
+#
+#        location /weight/ {
+#                proxy_pass http://app_snake_weight/;
+#        }
+#
+#
+#        location /info/ {
+#                return 200 $server_name$request_uri;
+#        }
+#
+#        location /images {
+#                autoindex on;
+#                allow 192.168.0.0/24;
+#                allow 10.0.0.0/8;
+#                allow 95.90.252.154;
+#                deny all;
+#                access_log /var/log/nginx/server360.local.images.access.log;
+#                error_log /var/log/nginx/server360.local.images.error.log;
+#
+#        }
+#
+#         error_page 403 /403.html;
+#                location = /403.html {
+#                internal;
+#        }
+#
+#        error_page 404 /404.html;
+#        location = /404.html {
+#                internal;
+#        }
+#
+#        error_page 500 502 503 504 /50x.html;
+#        location = /50x.html {
+#                internal;
+#        }
+#
+#
+#        location = /500 {
+#                fastcgi_pass unix:/this/will/fail;
+#        }
+#
+#        location ~ \.php$ {
+#                include snippets/fastcgi-php.conf;
+#                fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+#                fastcgi_intercept_errors on;
+#        }
+#
+#        location /secure {
+#                autoindex on;
+#                allow 95.90.252.154;
+#                deny all;
+#                location ~ \.php$ {
+#                        include snippets/fastcgi-php.conf;
+#                        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+#                        fastcgi_intercept_errors on;
+#                }
+#
+#        }
+#
+#        location /open/ {
+#                autoindex on;
+#                auth_basic "Auth is req...";
+#                auth_basic_user_file /etc/nginx/passwords;
+#
+#                location ~ \.php$ {
+#                        include snippets/fastcgi-php.conf;
+#                        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+#                        fastcgi_intercept_errors on;
+#                }
+#
+#        }
+#
+#}
 
 ## Libraries
 // sweetalert2.js
