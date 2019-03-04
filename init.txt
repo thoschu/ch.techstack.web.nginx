@@ -1,10 +1,20 @@
+sh -c 'echo "Welcome User" > /etc/motd'
+
 ssh-keygen -t rsa -b 4096
 /home/xxx/.ssh/authorized_keys
-cat id_dsa.pub >> .ssh/authorized_keys
+cat id_rsa.pub >> .ssh/authorized_keys
 sudo diff /etc/ssh/sshd_config /etc/ssh/sshd_config.orig
 systemctl restart sshd
 
 wget https://gist.githubusercontent.com/thoschu/e5e42bbc2aaa6234d8502e7bb6ea5d44/raw/af47cfb02232a7ac0ae06d49cc23acf277b202a9/java-docker.sh
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-18-04
+https://github.com/chaifeng/ufw-docker
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow ssh
+ufw enable
+systemctl status ufw
 
 cd  /etc/netplan/
 netplan generate
@@ -24,9 +34,17 @@ docker run --name nginx -v /nginx/html:/usr/share/nginx/html:ro -v /nginx/conf/n
 docker run --name nginx -v /nginx/html:/usr/share/nginx/html:ro -v /nginx/conf:/etc/nginx:ro --link chat:chat -p 80:80 -p 443:443 -d nginx
 docker run --name nginx -v /root/nginx/html:/usr/share/nginx/html:ro --link chat:chat -p 80:80 -p 443:443 -d nginx
 docker run --name nginx --link chat:chat -p 80:80 -p 443:443 -d nginx
+
+docker run --name nginx -v /root/www/server360.io:/usr/share/nginx/html:ro --link chat:chat -p 80:80 -p 443:443 -d nginx
+docker run --name nginx -v /root/www/server360.io:/usr/share/nginx/html:ro -v /root/nginx/conf.d:/etc/nginx/conf.d:ro --link chat:chat -p 80:80 -p 443:443 -d nginx
+ "/root/www/server360.io:/usr/share/nginx/html:ro",
+                "/root/nginx/conf.d:/etc/nginx/conf.d:ro"
+
+
+
 docker run --name nginx -p 80:80 -p 443:443 -d nginx
 cat /etc/hosts
-
+docker exec -u root -it nginx bash
 
 docker run \
   --volume=/:/rootfs:ro \
@@ -46,11 +64,13 @@ docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm -it kylemanna/openv
 
 docker run -v $OVPN_DATA:/etc/openvpn -d -p 1194:1194/udp --privileged --name ovpn --cap-add=NET_ADMIN kylemanna/openvpn
 docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm -it kylemanna/openvpn easyrsa build-client-full tom nopass
-docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_getclient tom > tom.ovpn	
+docker run -v $OVPN_DATA:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_getclient tom > tom.ovpn
 
-wget https://github.com/nginxinc/nginx-amplify-agent/raw/master/packages/install.sh
 apt-cache pkgnames | grep python2.7
 apt-get install python2.7
+curl -sS -L -O \
+https://github.com/nginxinc/nginx-amplify-agent/raw/master/packages/install.sh && \
+API_KEY='YOUR_API_KEY' sh ./install.sh
 
 lsb_release -a
 uname -a
