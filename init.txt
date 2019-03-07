@@ -37,9 +37,13 @@ docker run --name nginx --link chat:chat -p 80:80 -p 443:443 -d nginx
 
 docker run --name nginx -v /root/www/server360.io:/usr/share/nginx/html:ro --link chat:chat -p 80:80 -p 443:443 -d nginx
 docker run --name nginx
-            -v /root/www/server360.io:/usr/share/nginx/html:ro
-            -v /root/nginx/conf.d:/etc/nginx/conf.d:ro
---link chat:chat -p 80:80 -p 443:443 -d nginx
+           -v /root/nginx/www/server360.io:/usr/share/nginx/html/server360.io:ro
+           -v /root/nginx/www/default_server:/usr/share/nginx/html/default_server:ro
+           -v /root/nginx/conf.d:/etc/nginx/conf.d:ro
+           --link chat:chat
+           -p 80:80
+           -p 443:443
+           -d nginx
 
 
 
