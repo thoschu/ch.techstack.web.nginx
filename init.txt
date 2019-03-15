@@ -31,7 +31,7 @@ docker run --name chat -d -p 3000:3000 thoschu/de.schulte360.web.chat
 docker run --name snake -d thoschu/de.schulte360.web.snake
 
 docker run --name nginx --link chat:chat -p 80:80 -p 443:443 -d nginx
-docker run --name nginx -v /root/nginx/www/error:/usr/share/nginx/html/error:ro -v /root/nginx/www/server360.io:/usr/share/nginx/html/server360.io:ro -v /root/nginx/www/default_server:/usr/share/nginx/html/default_server:ro -v /root/nginx/conf.d:/etc/nginx/conf.d:ro --link chat:chat -p 80:80 -p 443:443 -d nginx
+docker run --name nginx -v /root/nginx/www/error:/usr/share/nginx/html/error:ro -v /root/nginx/www/server360.io:/usr/share/nginx/html/server360.io:ro -v /root/nginx/www/default_server:/usr/share/nginx/html/default_server:ro -v /root/nginx/conf.d:/etc/nginx/conf.d --link chat:chat -p 80:80 -p 443:443 -d nginx
 cat /etc/hosts
 docker exec -u root -it nginx bash
 
@@ -64,5 +64,11 @@ API_KEY='YOUR_API_KEY' sh ./install.sh
 lsb_release -a
 uname -a
 
-https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-9
-	 
+sudo nano /etc/apt/sources.list
+    ...
+    deb http://deb.debian.org/debian stretch-backports main contrib non-free
+    deb-src http://deb.debian.org/debian stretch-backports main contrib non-free
+sudo apt update
+sudo apt install python-certbot-nginx -t stretch-backports
+sudo nginx -t
+certbot --nginx -d server360.io -d www.server360.io -d chat.server360.io -d jenkins.server360.io

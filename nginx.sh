@@ -11,6 +11,13 @@ which nginx
 apt-get install nginx -y
 nginx -v
 systemctl status nginx
+service nginx {start|stop|restart|reload|force-reload|status|configtest|rotate|upgrade}
+
+docker run -it -p 80:80 -p 443:443 --name nginx ubuntu bash
+docker run --name nginx -v /root/nginx/www/error:/usr/share/nginx/html/error:ro -v /root/nginx/www/server360.io:/usr/share/nginx/html/server360.io:ro -v /root/nginx/www/default_server:/usr/share/nginx/html/default_server:ro -v /root/nginx/conf.d:/etc/nginx/conf.d:ro --link chat:chat -p 80:80 -p 443:443 -d ubuntu
+
+
+certbot --nginx -d chat.server360.io -d server360.io -d www.server360.io
 
 
 ## NGINX files and directories
@@ -189,6 +196,8 @@ tail -f /var/log/nginx/*.log
 apt install php-fpm php-mysql -y
 php --version
 systemctl status php7.2-fpm
+service php7.0-fpm reload
+https://www.howtoforge.com/tutorial/installing-nginx-with-php7-fpm-and-mysql-on-ubuntu-16.04-lts-lemp/
 
 #<?php phpinfo(); phpinfo(INFO_MODULES); ?> ### index.php
 
@@ -419,10 +428,10 @@ netstat -tulpn | grep LISTEN
 #                fastcgi_intercept_errors on;
 #        }
 #
-#        location /secure {
-#                autoindex on;
-#                allow 95.90.252.154;
-#                deny all;
+
+
+
+
 #                location ~ \.php$ {
 #                        include snippets/fastcgi-php.conf;
 #                        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
