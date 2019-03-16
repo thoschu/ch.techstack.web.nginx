@@ -196,7 +196,7 @@ tail -f /var/log/nginx/*.log
 apt install php-fpm php-mysql -y
 php --version
 systemctl status php7.2-fpm
-service php7.0-fpm reload
+service php7.2-fpm reload
 https://www.howtoforge.com/tutorial/installing-nginx-with-php7-fpm-and-mysql-on-ubuntu-16.04-lts-lemp/
 
 #<?php phpinfo(); phpinfo(INFO_MODULES); ?> ### index.php
@@ -260,6 +260,7 @@ exit
 
 
 ## Secure NGINX
+dpkg --list
 apt install apache2-utils -y
 htpasswd -c /etc/nginx/passwords tom
 htpasswd /etc/nginx/passwords thomas
