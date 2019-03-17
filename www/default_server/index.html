@@ -37,6 +37,39 @@
                 margin-left: -400px; /* Half the width */
                 z-index: -1;
             }
+
+            progress {
+                width: 100%;
+                background-color: #de2910;
+            }
+
+            progress::-webkit-progress-bar {
+                background-color: #de2910;
+            }
+
+            progress::-webkit-progress-value {
+                background-color: gray;
+            }
+
+            progress::-moz-progress-bar {
+                background-color: gray;
+            }
+
+            progress.between::-webkit-progress-value {
+                background-color: #186be7;
+            }
+
+            progress.between::-moz-progress-bar {
+                background-color: #186be7;
+            }
+
+            progress.end::-webkit-progress-value {
+                background-color: green;
+            }
+
+            progress.end::-moz-progress-bar {
+                background-color: green;
+            }
         </style>
     </head>
     <body>
@@ -47,7 +80,7 @@
             <img src="img/spinner.gif" alt="spinner">
         </div>
         <div style="z-index: 1000 !important;">
-            <progress id="progressBar" value="0" max="13" style="min-width: 100%;"></progress>
+            <progress id="progressBar" value="0" max="13"></progress>
         </div>
         <script>
             const title = document.querySelector('title'),
@@ -79,14 +112,25 @@
                 }
             })(0);
 
-            let barInterval = null;
-            barInterval = setInterval(function(interval){
-                if(progress.value >= 13) {
-                    clearInterval(interval);
+            const barInterval = setInterval(function () {
+                if (progress.value >= 13) {
+                    clearProgressInterval();
                 } else {
                     progress.value = progress.value += 1;
+
+                    if (progress.value === 7) {
+                        progress.classList.add("between");
+                    }
+
+                    if (progress.value === 13) {
+                        progress.classList.add("end");
+                    }
                 }
-            }, 1000, barInterval);
+            }, 1000),
+            clearProgressInterval = function () {
+                clearInterval(barInterval);
+            };
+
 
             setTimeout(function (newUrl) {
                 if(window.opener !== null) {
