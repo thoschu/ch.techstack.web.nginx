@@ -23,7 +23,7 @@ netplan apply
 docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nginx
 docker inspect --format='{{range .NetworkSettings.Networks}}{{.MacAddress}}{{end}}' nginx
 
-docker run -d --name jenkins2 -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+docker run -d --name jenkins2 -e TZ="Europe/Berlin" -v $HOME/jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
 docker exec -it jenkins2 cat /var/jenkins_home/secrets/initialAdminPassword
 
 docker run --name chat -d -p 3000:3000 thoschu/de.schulte360.web.chat
