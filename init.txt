@@ -41,6 +41,10 @@ add-apt-repository \
 apt-get update && \
 apt-get -y install docker-ce
 
+## allowing jenkins user to run sudo commands
+#RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+## avoid typing sudo in command line
+#RUN echo "alias docker='sudo docker '" >> /home/jenkins/.bashrc
 echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 docker exec -it jenkins2 cat /var/jenkins_home/secrets/initialAdminPassword
