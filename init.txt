@@ -41,6 +41,8 @@ add-apt-repository \
 apt-get update && \
 apt-get -y install docker-ce
 
+echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 docker exec -it jenkins2 cat /var/jenkins_home/secrets/initialAdminPassword
 
 docker run --name chat -d -p 3000:3000 thoschu/de.schulte360.web.chat
