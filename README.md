@@ -1,2 +1,2 @@
-# io.server360.web.nginx
+# ch.techstack.web.nginx
 NGINX Configuration
