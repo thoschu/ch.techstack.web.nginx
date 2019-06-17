@@ -14,7 +14,7 @@ systemctl status nginx
 service nginx {start|stop|restart|reload|force-reload|status|configtest|rotate|upgrade}
 
 docker run -it -p 80:80 -p 443:443 --name nginx ubuntu bash
-docker run --name nginx -v /root/nginx/www/error:/usr/share/nginx/html/error:ro -v /root/nginx/www/server360.io:/usr/share/nginx/html/server360.io:ro -v /root/nginx/www/default_server:/usr/share/nginx/html/default_server:ro -v /root/nginx/conf.d:/etc/nginx/conf.d:ro --link chat:chat -p 80:80 -p 443:443 -d ubuntu
+# docker run --name nginx -v /root/nginx/www/error:/usr/share/nginx/html/error:ro -v /root/nginx/www/server360.io:/usr/share/nginx/html/server360.io:ro -v /root/nginx/www/default_server:/usr/share/nginx/html/default_server:ro -v /root/nginx/conf.d:/etc/nginx/conf.d:ro --link chat:chat -p 80:80 -p 443:443 -d ubuntu
 
 
 certbot --nginx -d chat.server360.io -d server360.io -d www.server360.io

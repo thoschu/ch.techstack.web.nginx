@@ -94,4 +94,4 @@ sudo nano /etc/apt/sources.list
 sudo apt update
 sudo apt install python-certbot-nginx -t stretch-backports
 sudo nginx -t
-certbot --nginx -d server360.io -d www.server360.io -d chat.server360.io -d jenkins.server360.io
+certbot --nginx -d techstack.ch -d www.techstack.ch -d chat.techstack.ch -d jenkins.techstack.ch
