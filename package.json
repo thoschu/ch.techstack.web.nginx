@@ -1,0 +1,29 @@
+{
+  "name": "io.server360.web.nginx",
+  "version": "1.0.0",
+  "description": "project for nginx configurations",
+  "main": "server.js",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js --env=debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thoschu/io.server360.web.nginx.git"
+  },
+  "keywords": [
+    "nginx",
+    "node.js",
+    "npm"
+  ],
+  "author": "Tom S.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thoschu/io.server360.web.nginx/issues"
+  },
+  "homepage": "https://github.com/thoschu/io.server360.web.nginx#readme"
+}

@@ -184,23 +184,21 @@
 				margin:-75px 0 0 -135px;
 			}
 		</style>
-		<!-- Piwik -->
-		<script type="text/javascript">
-			var _paq = _paq || [];
-			_paq.push(["setCookieDomain", "*.techstack.ch"]);
-			_paq.push(['trackPageView']);
-			_paq.push(['enableLinkTracking']);
-			(function() {
-				var u="//analytics.schulte360.de/";
-				_paq.push(['setTrackerUrl', u+'piwik.php']);
-				_paq.push(['setSiteId', '4']);
-				var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-				g.type='text/javascript'; 
-				g.async=true; 
-				g.defer=true; 
-				g.src=u+'piwik.js'; 
-				s.parentNode.insertBefore(g,s);
-			})();
+
+		<script>
+            var _paq = _paq || [];
+            _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+            _paq.push(["setCookieDomain", "*.techstack.ch"]);
+            _paq.push(["setDomains", ["*.techstack.ch","*.www.techstack.ch","*.techstack.ch","*.www.techstack.ch"]]);
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                var u="//analytics.schulte360.de/";
+                _paq.push(['setTrackerUrl', u+'piwik.php']);
+                _paq.push(['setSiteId', '5']);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+            })();
 
             const key = document.querySelector(".key");
             const keyhole = document.querySelector(".keyhole");
@@ -245,12 +243,12 @@
                 keyhole.removeEventListener("mouseover", grantAccess);
             };
 		</script>
-		<!-- End Piwik Code -->
 	</head>
-	<body> 
-		<!-- Piwik Image Tracker-->
-		<img src="https://analytics.schulte360.de/piwik.php?idsite=4&rec=1" style="border:0" alt="" />
-		<!-- End Piwik -->
+	<body>
+		<noscript>
+			<h1>Your browser does not support JavaScript!</h1>
+			<p><img src="//analytics.schulte360.de/piwik.php?idsite=5" style="border:0;" alt="" /></p>
+		</noscript>
 		<div class="className">
 			<svg style="display: none;">
 				<symbol id="keyhole" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 26.458333 26.458334"><g transform="translate(0 -270.542)"><circle cx="13.229" cy="279.141" r="8.599" fill="#f1eedb" paint-order="stroke fill markers"/><path d="M10.516 283.271h5.427c1.164 0 1.768.861 2.102 1.802l3.59 10.125c.334.94-.937 1.802-2.102 1.802H6.926c-1.165 0-2.437-.861-2.103-1.802l3.59-10.125c.334-.94.938-1.802 2.103-1.802z" fill="#f1eedb" paint-order="stroke fill markers"/><circle r="6.06" cy="279.141" cx="13.229" fill="#282b24" paint-order="stroke fill markers"/><path d="M11.502 283.76h3.455c.741 0 1.126.733 1.338 1.534l2.286 8.614c.213.8-.597 1.534-1.338 1.534H9.216c-.742 0-1.551-.733-1.339-1.534l2.286-8.614c.212-.8.597-1.534 1.339-1.534z" fill="#282b24" paint-order="stroke fill markers"/></g></symbol>
