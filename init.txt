@@ -87,6 +87,7 @@ API_KEY='YOUR_API_KEY' sh ./install.sh
 lsb_release -a
 uname -a
 
+# https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-9
 sudo nano /etc/apt/sources.list
     ...
     deb http://deb.debian.org/debian stretch-backports main contrib non-free
