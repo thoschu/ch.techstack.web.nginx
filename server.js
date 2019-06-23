@@ -1,12 +1,42 @@
 let test = 1;
 
 const http = require('http'),
+    fs = require('fs'),
+    path = require('path'),
 	url = require('url'),
 	util = require('util'),
     port = 8888;
 
+console.log('####');
+// console.log(__dirname);
+console.log(path.dirname(__filename));
+console.log('*****');
+
+
+const writeStream = fs.createWriteStream(`${__dirname}${path.sep}license.txt`);
+
+
+const readStream = fs.createReadStream(`${__dirname}${path.sep}package.json`, {encoding: 'utf8', highWaterMark: 512});
+
+readStream.on('readable', () => {
+    console.log(readStream.isPaused());
+    console.log(readStream.read());
+});
+
+readStream.on('end', () => {
+    console.log('end');
+});
+
+readStream.on('error', (err) => {
+    console.error(err);
+});
+
+readStream.on('close', () => {
+    console.log('close');
+});
+
 http.createServer(function (req, res) {
-    console.log(req);
+    // console.log(req);
     // console.log(Object.keys(req));
     // console.log(req.url);
     // console.log(url.parse(req.url, true));
@@ -34,6 +64,8 @@ http.createServer(function (req, res) {
 		</html>
 	`;
 
+    //readStream.pipe(req);
+
     console.time('foo');
     res.writeHead(200, {
         'content-type': 'text/html; charset=uft-8'
@@ -42,9 +74,7 @@ http.createServer(function (req, res) {
 
     test = 77;
 
-
     res.write('<!DOCTYPE html>');
-
 
     setTimeout(function fn(arg) {
 		res.end(arg);
@@ -54,5 +84,5 @@ http.createServer(function (req, res) {
 }).listen(port, function () {
     console.log(`Server is listening to: http://localhost:${port}`);
     console.log(process.getuid);
-    console.trace();
+    // console.trace();
 });
