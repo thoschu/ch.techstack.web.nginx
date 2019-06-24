@@ -5,6 +5,7 @@ const http = require('http'),
     path = require('path'),
 	url = require('url'),
 	util = require('util'),
+    stream = require('stream'),
     port = 8888;
 
 console.log('####');
@@ -14,26 +15,36 @@ console.log('*****');
 
 
 const writeStream = fs.createWriteStream(`${__dirname}${path.sep}license.txt`);
+const readStream = fs.createReadStream(`${__dirname}${path.sep}package.json`, {encoding: 'utf8', highWaterMark: 128});
 
 
-const readStream = fs.createReadStream(`${__dirname}${path.sep}package.json`, {encoding: 'utf8', highWaterMark: 512});
+class CopyTransformStream extends stream.Transform {
+    _transform(chunk, encoding, callback) {
+        //this.push(chunk.toString().toUpperCase());
+        callback(null, chunk.toString().toUpperCase());
+    }
+}
 
-readStream.on('readable', () => {
-    console.log(readStream.isPaused());
-    console.log(readStream.read());
-});
+const copy = new CopyTransformStream();
 
-readStream.on('end', () => {
-    console.log('end');
-});
+readStream.pipe(copy).pipe(writeStream);
 
-readStream.on('error', (err) => {
-    console.error(err);
-});
-
-readStream.on('close', () => {
-    console.log('close');
-});
+// readStream.on('readable', () => {
+//     console.log(readStream.isPaused());
+//     console.log(readStream.read());
+// });
+//
+// readStream.on('end', () => {
+//     console.log('end');
+// });
+//
+// readStream.on('error', (err) => {
+//     console.error(err);
+// });
+//
+// readStream.on('close', () => {
+//     console.log('close');
+// });
 
 http.createServer(function (req, res) {
     // console.log(req);
