@@ -21,6 +21,7 @@ const readStream = fs.createReadStream(`${__dirname}${path.sep}package.json`, {e
 class CopyTransformStream extends stream.Transform {
     _transform(chunk, encoding, callback) {
         //this.push(chunk.toString().toUpperCase());
+        //callback();
         callback(null, chunk.toString().toUpperCase());
     }
 }
