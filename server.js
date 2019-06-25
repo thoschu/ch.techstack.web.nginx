@@ -8,11 +8,27 @@ const http = require('http'),
     stream = require('stream'),
     port = 8888;
 
-console.log('####');
-// console.log(__dirname);
-console.log(path.dirname(__filename));
-console.log('*****');
+// console.log('####');
+// console.log(path.dirname(__filename));
+// console.log('*****');
 
+fs.stat('./package.json', (err, stat) => {
+    if(err) console.error(err);
+    else {
+        // console.log(stat);
+        fs.access('./package.json', fs.R_OK, err => {
+            if(err) console.error(err);
+            else {
+                fs.open('./package.json', 'r', (err, handle) => {
+                    if(err) console.error(err);
+                    else {
+                        console.log(handle);
+                    }
+                });
+            }
+        });
+    }
+});
 
 const writeStream = fs.createWriteStream(`${__dirname}${path.sep}license.txt`);
 const readStream = fs.createReadStream(`${__dirname}${path.sep}package.json`, {encoding: 'utf8', highWaterMark: 128});
