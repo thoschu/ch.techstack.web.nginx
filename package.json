@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {},
   "devDependencies": {
+    "gulp": "^4.0.2",
     "nodemon": "^1.19.1"
   },
   "scripts": {
