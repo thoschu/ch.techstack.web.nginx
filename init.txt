@@ -96,3 +96,5 @@ sudo apt update
 sudo apt install python-certbot-nginx -t stretch-backports
 sudo nginx -t
 certbot --nginx -d techstack.ch -d www.techstack.ch -d chat.techstack.ch -d jenkins.techstack.ch
+# https://askubuntu.com/questions/91543/apt-get-update-fails-to-fetch-files-temporary-failure-resolving-error
+
