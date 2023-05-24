@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "project for nginx configurations",
   "main": "server.js",
-  "dependencies": {},
+  "dependencies": {
+    "nodemailer": "^6.9.2"
+  },
   "devDependencies": {
     "gulp": "^4.0.2",
     "nodemon": "^1.19.1"

@@ -2,10 +2,9 @@
 <html lang="de">
 	<head>
 		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="icon" type="image/png" href="img/favicon.png" sizes="32x32">
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+		<link href="./img/favicon.png" rel="icon" type="image/png" sizes="32x32">
+		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 		<title>ɥɔ˙ʞɔɐʇsɥɔǝʇ</title>
 		<style>
 			body {
@@ -23,53 +22,41 @@
 				object-fit: contain
 			}
 		</style>
-		<!-- Google Tag Manager -->
 		<script>
-            var _paq = _paq || [];
-            _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-            _paq.push(["setCookieDomain", "*.techstack.ch"]);
-            _paq.push(["setDomains", ["*.techstack.ch","*.www.techstack.ch","*.techstack.ch","*.www.techstack.ch"]]);
-            _paq.push(['trackPageView']);
-            _paq.push(['enableLinkTracking']);
-            (function() {
-                var u="//analytics.schulte360.de/";
-                _paq.push(['setTrackerUrl', u+'piwik.php']);
-                _paq.push(['setSiteId', '5']);
-                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-            })();
-
-            (function(w,d,s,l,i) {
-                w[l]=w[l]||[];
-                w[l].push({
-                    'gtm.start': new Date().getTime(), event:'gtm.js'
-                });
-                var f=d.getElementsByTagName(s)[0],
-                    j = d.createElement(s),
-                    dl=l!='dataLayer'?'&l='+l:'';
-                j.async=true;
-                j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-                f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-M6X493X');
+			var _paq = window._paq = window._paq || [];
+			_paq.push(["setCookieDomain", "*.techstack.ch"]);
+			_paq.push(['trackPageView']);
+			_paq.push(['enableLinkTracking']);
+			(function() {
+				var u="https://analytics.thomas-schulte.de/";
+				_paq.push(['setTrackerUrl', u+'matomo.php']);
+				_paq.push(['setSiteId', '2']);
+				var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+				g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+			})();
 		</script>
-		<noscript><p><img src="//analytics.schulte360.de/piwik.php?idsite=5" style="border:0;" alt="" /></p></noscript>
-		<!-- End Piwik Code -->
-
+		<script>
+			var _mtm = window._mtm = window._mtm || [];
+			_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+			var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+			g.async=true; g.src='https://analytics.thomas-schulte.de/js/container_SRzGf97g.js'; s.parentNode.insertBefore(g,s);
+		</script>
 		<!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+			<script src="//oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+			<script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 	</head>
 	<body>
 		<noscript>
 			<h1>Your browser does not support JavaScript!</h1>
-			<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M6X493X" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-			<p><img src="//analytics.schulte360.de/piwik.php?idsite=5" style="border:0;" alt="" /></p>
+			<p>
+				<img src="//analytics.thomas-schulte.de/matomo.php?idsite=2&amp;rec=1" style="border:0;" alt="matomo">
+			</p>
 		</noscript>		
 		<div>
-			<img src="img/dashboard.gif" alt="dashboard.gif">
+			<img src="./img/dashboard.gif" alt="dashboard.gif">
 		</div>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	</body>
 </html>
