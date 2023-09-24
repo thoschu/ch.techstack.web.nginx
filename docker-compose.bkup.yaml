@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+#  nginx:
+#    image: "nginx"
+#    ports:
+#      - "8099:80"
+#      - "4443:443"
+#    volumes:
+#      - "/home/tom/docker-nginx/www:/usr/share/nginx/html:ro"
+#      - "/home/tom/docker-nginx/conf.d:/etc/nginx/conf.d"
+#    depends_on:
+#      - "portainer"
+#    links:
+#      - "chat:chat"
+#  portainer:
+#    image: "portainer/portainer-ce:latest"
+#    ports:
+#      - "8000:8000"
+#      - "9443:9443"
+#    volumes:
+#      - "/var/run/docker.sock:/var/run/docker.sock"
+#      - "portainer_data:/data"
+#    container_name: "portainer"
+#    restart: always
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    container_name: "gitlab"
+    restart: always
+    hostname: 'gitlab.techstack.ch'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.techstack.ch'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+    ports:
+      - '8060:80'
+      - '2222:22'
+    volumes:
+      - '$GITLAB_HOME/config:/etc/gitlab'
+      - '$GITLAB_HOME/logs:/var/log/gitlab'
+      - '$GITLAB_HOME/data:/var/opt/gitlab'
+    shm_size: '256m'

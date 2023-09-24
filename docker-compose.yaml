@@ -1,41 +1,279 @@
-version: "3.9"
+version: "3.8"
 services:
-#  nginx:
-#    image: "nginx"
-#    ports:
-#      - "8099:80"
-#      - "4443:443"
-#    volumes:
-#      - "/home/tom/docker-nginx/www:/usr/share/nginx/html:ro"
-#      - "/home/tom/docker-nginx/conf.d:/etc/nginx/conf.d"
-#    depends_on:
-#      - "portainer"
-#    links:
-#      - "chat:chat"
-#  portainer:
-#    image: "portainer/portainer-ce:latest"
-#    ports:
-#      - "8000:8000"
-#      - "9443:9443"
-#    volumes:
-#      - "/var/run/docker.sock:/var/run/docker.sock"
-#      - "portainer_data:/data"
-#    container_name: "portainer"
-#    restart: always
-  gitlab:
-    image: 'gitlab/gitlab-ce:latest'
-    container_name: "gitlab"
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    ports:
+      - "9000:8000"
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
     restart: always
-    hostname: 'gitlab.techstack.ch'
+    networks:
+      - web
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - cadvisor
+    networks:
+      - web
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+      - redis
+    networks:
+      - web
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    container_name: redisinsight
+    ports:
+      - "8001:8001"
+    depends_on:
+      - redis
+    networks:
+      - web
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    restart: always
+    hostname: gitlab.techstack.ch
+    container_name: gitlab
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'https://gitlab.techstack.ch'
         gitlab_rails['gitlab_shell_ssh_port'] = 2222
     ports:
-      - '8060:80'
+      - '8088:80'
+      - '8443:443'
       - '2222:22'
     volumes:
-      - '$GITLAB_HOME/config:/etc/gitlab'
-      - '$GITLAB_HOME/logs:/var/log/gitlab'
-      - '$GITLAB_HOME/data:/var/opt/gitlab'
-    shm_size: '256m'
+      - /root/gitlab/config:/etc/gitlab
+      - /root/gitlab/logs:/var/log/gitlab
+      - /root/gitlab/data:/var/opt/gitlab
+    networks:
+      - gitlab
+      - web
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine
+    container_name: gitlab-runner
+    restart: always
+    depends_on:
+      - gitlab
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/gitlab/gitlab-runner:/etc/gitlab-runner
+    networks:
+      - gitlab
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      #- ./sql:/docker-entrypoint-initdb.d/:ro # turn it on, if you need run init DB
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: keycloak
+      POSTGRES_HOST: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - keycloak
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: thoschulte@googlemail.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - "5050:80"
+    depends_on:
+        - postgres
+    networks:
+      - keycloak
+      - web
+  keycloak:
+    image: jboss/keycloak:latest
+    container_name: keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: password
+      KEYCLOAK_LOGLEVEL: DEBUG
+      ROOT_LOGLEVEL: DEBUG
+    ports:
+      - "8877:8080"
+      - "8444:8443"
+    depends_on:
+      - postgres
+    networks:
+      - keycloak
+      - web
+  mongo:
+    image: mongo
+    restart: always
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    networks:
+      - mongo
+  mongo-express:
+    image: mongo-express
+    restart: always
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongo:27017/
+    depends_on:
+      - mongo
+    networks:
+      - web
+      - mongo
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    privileged: true
+    user: root
+    ports:
+      - "8099:8080"
+      - "50000:50000"
+    volumes:
+      - /root/jenkins:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/local/bin/docker
+    networks:
+      - web
+  chat:
+    container_name: chat
+    image: thoschu/de.schulte360.web.chat
+#    ports:
+#      - "3000:3000"
+    networks:
+      - web
+  snake:
+    container_name: snake
+    image: thoschu/de.schulte360.web.snake
+    networks:
+      - web
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /root/nginx/www:/usr/share/nginx/html:ro
+      - /root/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - portainer
+      - chat
+      - snake
+      - jenkins
+    links:
+      - keycloak:keycloak
+    networks:
+      - web
+  loki:
+    image: grafana/loki:2.9.0
+    volumes:
+      - ./loki:/etc/loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/config.yaml
+    networks:
+      - loki
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    volumes:
+      - /var/log:/var/log
+      - ./promtail:/etc/promtail
+    command: -config.file=/etc/promtail/config.yaml
+    networks:
+      - loki
+
+  grafana:
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        mkdir -p /etc/grafana/provisioning/datasources
+        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+        apiVersion: 1
+        datasources:
+        - name: Loki
+          type: loki
+          access: proxy
+          orgId: 1
+          url: http://loki:3100
+          basicAuth: false
+          isDefault: true
+          version: 1
+          editable: false
+        EOF
+        /run.sh
+    image: grafana/grafana:latest
+    volumes:
+      - ./grafana:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - loki
+volumes:
+  openvpn_data:
+  portainer_data:
+  gitlab_data:
+  postgres_data:
+    driver: local
+networks:
+  jenkins:
+    name: jenkins
+  gitlab:
+    name: gitlab
+  keycloak:
+    name: keycloak
+  web:
+    name: web
+    driver: bridge
+  mongo:
+    name: mongo
+  loki:
+    name: loki
