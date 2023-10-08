@@ -95,6 +95,8 @@ sudo nano /etc/apt/sources.list
 sudo apt update
 sudo apt install certbot python3-certbot-nginx
 sudo e
+#sudo apt install certbot python3-certbot-nginx
 certbot --nginx -d techstack.ch -d www.techstack.ch -d chat.techstack.ch -d jenkins.techstack.ch -d portainer.techstack.ch -d gitlab.techstack.ch
 # https://askubuntu.com/questions/91543/apt-get-update-fails-to-fetch-files-temporary-failure-resolving-error
-
+# https://www.atlantic.net/dedicated-server-hosting/how-to-install-gitlab-with-docker-and-docker-compose-on-arch-linux/
+docker exec -it gitlab grep 'Password:' /etc/gitlab/initial_root_password

@@ -54,9 +54,9 @@ services:
     networks:
       - web
   gitlab:
-    image: gitlab/gitlab-ce:latest
+    image: 'gitlab/gitlab-ce:latest'
     restart: always
-    hostname: gitlab.techstack.ch
+    hostname: 'gitlab.techstack.ch'
     container_name: gitlab
     environment:
       GITLAB_OMNIBUS_CONFIG: |
@@ -70,6 +70,7 @@ services:
       - /root/gitlab/config:/etc/gitlab
       - /root/gitlab/logs:/var/log/gitlab
       - /root/gitlab/data:/var/opt/gitlab
+    shm_size: '256m'
     networks:
       - gitlab
       - web
@@ -198,65 +199,71 @@ services:
     volumes:
       - /root/nginx/www:/usr/share/nginx/html:ro
       - /root/nginx/conf.d:/etc/nginx/conf.d
+    #command: apt-get update && apt-get upgrade -y && apt-get install certbot python3-certbot-nginx -y
     depends_on:
       - portainer
       - chat
       - snake
       - jenkins
+      - gitlab
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     links:
       - keycloak:keycloak
     networks:
       - web
-  loki:
-    image: grafana/loki:2.9.0
-    volumes:
-      - ./loki:/etc/loki
-    ports:
-      - "3100:3100"
-    command: -config.file=/etc/loki/config.yaml
-    networks:
-      - loki
-
-  promtail:
-    image: grafana/promtail:2.9.0
-    volumes:
-      - /var/log:/var/log
-      - ./promtail:/etc/promtail
-    command: -config.file=/etc/promtail/config.yaml
-    networks:
-      - loki
-
-  grafana:
-    environment:
-      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-    entrypoint:
-      - sh
-      - -euc
-      - |
-        mkdir -p /etc/grafana/provisioning/datasources
-        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
-        apiVersion: 1
-        datasources:
-        - name: Loki
-          type: loki
-          access: proxy
-          orgId: 1
-          url: http://loki:3100
-          basicAuth: false
-          isDefault: true
-          version: 1
-          editable: false
-        EOF
-        /run.sh
-    image: grafana/grafana:latest
-    volumes:
-      - ./grafana:/var/lib/grafana
-    ports:
-      - "3000:3000"
-    networks:
-      - loki
+#  loki:
+#    image: grafana/loki:2.9.0
+#    volumes:
+#      - ./loki:/etc/loki
+#    ports:
+#      - "3100:3100"
+#    command: -config.file=/etc/loki/config.yaml
+#    networks:
+#      - loki
+#  promtail:
+#    image: grafana/promtail:2.9.0
+#    volumes:
+#      - /var/log:/var/log
+#      - ./promtail:/etc/promtail
+#    command: -config.file=/etc/promtail/config.yaml
+#    networks:
+#      - loki
+#  grafana:
+#    environment:
+#      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+#      - GF_AUTH_ANONYMOUS_ENABLED=true
+#      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+#    entrypoint:
+#      - sh
+#      - -euc
+#      - |
+#        mkdir -p /etc/grafana/provisioning/datasources
+#        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+#        apiVersion: 1
+#        datasources:
+#        - name: Loki
+#          type: loki
+#          access: proxy
+#          orgId: 1
+#          url: http://loki:3100
+#          basicAuth: false
+#          isDefault: true
+#          version: 1
+#          editable: false
+#        EOF
+#        /run.sh
+#    image: grafana/grafana:latest
+#    volumes:
+#      - ./grafana:/var/lib/grafana
+#    ports:
+#      - "3000:3000"
+#    networks:
+#      - loki
 volumes:
   openvpn_data:
   portainer_data:
@@ -266,8 +273,6 @@ volumes:
 networks:
   jenkins:
     name: jenkins
-  gitlab:
-    name: gitlab
   keycloak:
     name: keycloak
   web:
@@ -277,3 +282,5 @@ networks:
     name: mongo
   loki:
     name: loki
+  gitlab:
+    name: gitlab-network

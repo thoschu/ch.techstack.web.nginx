@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  mailserver:
+    image: ghcr.io/docker-mailserver/docker-mailserver:12
+    container_name: mailserver
+    hostname: mail.techstack.ch
+    env_file: mailserver.env
+    ports:
+      - "25:25"    # SMTP  (explicit TLS => STARTTLS)
+      - "143:143"  # IMAP4 (explicit TLS => STARTTLS)
+      - "465:465"  # ESMTP (implicit TLS)
+      - "587:587"  # ESMTP (explicit TLS => STARTTLS)
+      - "993:993"  # IMAP4 (implicit TLS)
+    volumes:
+      - ./docker-data/dms/mail-data/:/var/mail/
+      - ./docker-data/dms/mail-state/:/var/mail-state/
+      - ./docker-data/dms/mail-logs/:/var/log/mail/
+      - ./docker-data/dms/config/:/tmp/docker-mailserver/
+      - /etc/localtime:/etc/localtime:ro
+      - ./letsencrypt:/etc/letsencrypt
+    restart: always
+    stop_grace_period: 1m
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    healthcheck:
+      test: "ss --listening --tcp | grep -P 'LISTEN.+:smtp' || exit 1"
+      timeout: 3s
+      retries: 0
+    depends_on:
+      - certbot
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    ports:
+      - "88:80"
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt
+      - ./certbot/logs:/var/log/letsencrypt/
+    command: certonly --standalone --http-01-port 88 --force-renewal --email mail@techstack.ch -d mail.techstack.ch --agree-tos
