@@ -56,24 +56,22 @@ services:
   gitlab:
     image: 'gitlab/gitlab-ce:latest'
     restart: always
-    hostname: 'gitlab.techstack.ch'
+    #hostname: 'http://202.61.228.88/'
+    hostname: 'localhost'
     container_name: gitlab
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.techstack.ch'
-        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+        external_url 'http://202.61.228.88'
     ports:
-      - '8088:80'
+      - '8090:80'
       - '8443:443'
-      - '2222:22'
+      - '22222:22'
     volumes:
-      - /root/gitlab/config:/etc/gitlab
-      - /root/gitlab/logs:/var/log/gitlab
-      - /root/gitlab/data:/var/opt/gitlab
-    shm_size: '256m'
+      - '$GITLAB_HOME/config:/etc/gitlab'
+      - '$GITLAB_HOME/logs:/var/log/gitlab'
+      - '$GITLAB_HOME/data:/var/opt/gitlab'
     networks:
       - gitlab
-      - web
   gitlab-runner:
     image: gitlab/gitlab-runner:alpine
     container_name: gitlab-runner
@@ -82,9 +80,11 @@ services:
       - gitlab
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /root/gitlab/gitlab-runner:/etc/gitlab-runner
+      - '$GITLAB_HOME/gitlab-runner:/etc/gitlab-runner'
     networks:
       - gitlab
+    # docker exec -it gitlab grep 'Password:' /etc/gitlab/initial_root_password
+    # root
   postgres:
     container_name: postgres
     image: postgres:latest
@@ -132,6 +132,8 @@ services:
       KEYCLOAK_PASSWORD: password
       KEYCLOAK_LOGLEVEL: DEBUG
       ROOT_LOGLEVEL: DEBUG
+      #KEYCLOAK_FRONTEND_URL: https://iam.techstack.ch/auth/
+      PROXY_ADDRESS_FORWARDING: true
     ports:
       - "8877:8080"
       - "8444:8443"
@@ -199,13 +201,15 @@ services:
     volumes:
       - /root/nginx/www:/usr/share/nginx/html:ro
       - /root/nginx/conf.d:/etc/nginx/conf.d
-    #command: apt-get update && apt-get upgrade -y && apt-get install certbot python3-certbot-nginx -y
+    #command: apt-get update && apt-get upgrade -y && apt-get install nano certbot python3-certbot-nginx -y
+    # certbot --nginx -d example.com -d www.example.com
     depends_on:
       - portainer
       - chat
       - snake
       - jenkins
       - gitlab
+      - keycloak
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost" ]
       interval: 1m30s
@@ -214,6 +218,7 @@ services:
       start_period: 40s
     links:
       - keycloak:keycloak
+      - gitlab:gitlab
     networks:
       - web
 #  loki:
