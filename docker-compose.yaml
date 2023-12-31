@@ -142,6 +142,7 @@ services:
     networks:
       - keycloak
       - web
+    # /opt/jboss/keycloak/themes
   mongo:
     image: mongo
     restart: always
@@ -190,6 +191,7 @@ services:
   snake:
     container_name: snake
     image: thoschu/de.schulte360.web.snake
+    # echo "deb http://archive.debian.org/debian/ stretch main" | tee /etc/apt/sources.list
     networks:
       - web
   nginx:
