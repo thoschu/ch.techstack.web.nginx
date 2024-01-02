@@ -205,6 +205,7 @@ services:
       - /root/nginx/conf.d:/etc/nginx/conf.d
     #command: apt-get update && apt-get upgrade -y && apt-get install nano certbot python3-certbot-nginx -y
     # certbot --nginx -d example.com -d www.example.com
+    # https://www.youtube.com/watch?v=qxj-cfVgtNY
     depends_on:
       - portainer
       - chat
