@@ -187,6 +187,10 @@ services:
     image: thoschu/chat
 #    ports:
 #      - "3000:3000"
+    environment:
+      - DEBUG=${DEBUG}
+      - ENVIRONMENT=${$ENVIRONMENT}
+      - OPENAI_APIKEY=${$OPENAI_APIKEY}
     networks:
       - web
   snake:
