@@ -183,7 +183,8 @@ services:
       - web
   chat:
     container_name: chat
-    image: thoschu/de.schulte360.web.chat
+    #image: thoschu/de.schulte360.web.chat
+    image: thoschu/chat
 #    ports:
 #      - "3000:3000"
     networks:
