@@ -18,9 +18,13 @@ COPY . /usr/src/app
 
 EXPOSE 3000
 
+HEALTHCHECK --interval=5m --timeout=3s \
+  CMD curl -f http://localhost:3000 || exit 1
+
 CMD ["npm","start"]
 
 # ----------------------------------------
+# https://docs.docker.com/engine/reference/builder/
 
 # FROM	        We use “FROM” to specify the base image we want to start from.
 
