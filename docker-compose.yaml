@@ -184,19 +184,33 @@ services:
   chat:
     container_name: chat
     #image: thoschu/de.schulte360.web.chat
-    image: thoschu/chat
+    image: thoschu/chat:latest-amd64
 #    ports:
 #      - "3000:3000"
     environment:
       - DEBUG=${DEBUG}
       - ENVIRONMENT=${ENVIRONMENT}
       - OPENAI_APIKEY=${OPENAI_APIKEY}
+    depends_on:
+      - coturn
     networks:
       - web
   snake:
     container_name: snake
     image: thoschu/de.schulte360.web.snake
     # echo "deb http://archive.debian.org/debian/ stretch main" | tee /etc/apt/sources.list
+    networks:
+      - web
+  coturn:
+    container_name: coturn
+    image: coturn/coturn
+    ports:
+      - 3478:3478
+      - 3478:3478/udp
+      - 5349:5349
+      - 5349:5349/udp
+      - 49160-49200:49160-49200/udp
+    command: --min-port=49160 --max-port=49200
     networks:
       - web
   nginx:
