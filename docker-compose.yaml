@@ -1,5 +1,16 @@
 version: "3.8"
 services:
+  # docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+  # docker exec -it ollama ollama run llama3.2
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    networks:
+      - web
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
